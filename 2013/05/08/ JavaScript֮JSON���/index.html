@@ -1,0 +1,733 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="JSON," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="向服务器发出Ajax请求时，可以以两种不同的方式从服务器响应检索数据：一种是使用XMLHttpRequest对象的reponseXML属性访问XML格式的数据；一种是XMLHttpRequest对象的responseText属性访问字符串格式的数据。当前，XML是进行数据传输的标准语言，但是使用XML的缺点之一是很难对它进行解析并提取要添加到页面的数据。
+ JSON(JavaScript Obje">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript之JSON详解">
+<meta property="og:url" content="http://wooley.win/2013/05/08/ JavaScript之JSON详解/index.html">
+<meta property="og:site_name" content="航行日志">
+<meta property="og:description" content="向服务器发出Ajax请求时，可以以两种不同的方式从服务器响应检索数据：一种是使用XMLHttpRequest对象的reponseXML属性访问XML格式的数据；一种是XMLHttpRequest对象的responseText属性访问字符串格式的数据。当前，XML是进行数据传输的标准语言，但是使用XML的缺点之一是很难对它进行解析并提取要添加到页面的数据。
+ JSON(JavaScript Obje">
+<meta property="og:updated_time" content="2016-12-02T09:43:58.675Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript之JSON详解">
+<meta name="twitter:description" content="向服务器发出Ajax请求时，可以以两种不同的方式从服务器响应检索数据：一种是使用XMLHttpRequest对象的reponseXML属性访问XML格式的数据；一种是XMLHttpRequest对象的responseText属性访问字符串格式的数据。当前，XML是进行数据传输的标准语言，但是使用XML的缺点之一是很难对它进行解析并提取要添加到页面的数据。
+ JSON(JavaScript Obje">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://wooley.win/2013/05/08/ JavaScript之JSON详解/"/>
+
+
+
+
+
+  <title> JavaScript之JSON详解 | 航行日志 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">航行日志</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">追寻梦想</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://wooley.win/2013/05/08/ JavaScript之JSON详解/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Wooley Gu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="航行日志">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="航行日志" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                JavaScript之JSON详解
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2013-05-08T09:16:02+08:00">
+                2013-05-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/程序人生/" itemprop="url" rel="index">
+                    <span itemprop="name">程序人生</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <pre><code>向服务器发出Ajax请求时，可以以两种不同的方式从服务器响应检索数据：一种是使用XMLHttpRequest对象的reponseXML属性访问XML格式的数据；一种是XMLHttpRequest对象的responseText属性访问字符串格式的数据。当前，XML是进行数据传输的标准语言，但是使用XML的缺点之一是很难对它进行解析并提取要添加到页面的数据。
+ JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式，我们称之为JavaScript对象表示法。使用JSON进行数据传输的优势之一是JSON实际上就是JavaScript。它基于ECMAScript第3版中JavaScript对象字面量语法子集的一种文本格式。这表示可以使用responseText从服务器中检索JSON数据，然后再使用JavaScript的eval()方法将JSON字符串转换成JavaScript对象，那么，使用附加JavaScript就可以很地从该对象中提取数据，而不需要处理DOM。
+ 另外，也有针对大部分编程语言（包括C++，C#,ColdFusion、Java、Perl、PHP和Python）的JSON库，这些库能将上述语言格式化数据转换成JSON格式。
+
+ 尽管有许多宣传关于XML如何拥有跨平台，跨语言的优势，然而，除非应用于Web Services，否则，在普通的Web应用中，开发都经常为XML的解析作秀了脑筋，无论是服务器端生成或处理XML，还是客户端用JavaScript解析XML，都常常导致复杂的代码，极低的开发效率。实际上，对于大多数Web应用来说，根本不需要要复杂的XML来传输数据，XML的扩展性很少具有优势，许多Ajax应用甚至直接返回HTML片段来构建动态Web页面。和返回XML并解析它相比，返回HTML片段大大降低了系统的复杂性，但同时缺少了一定的灵活性。XML使用元素、属性、实体和其他结构。JSON不是文档格式，因此它不需要这些附加结构。因为JSON数据只包括“名-值”对（对象）或值（数组），所以JSON数据比同等的XML数据占用更少的空间，执行速度更快。
+ （一）JSON语法 
+ JSON建构于两种结构：
+ 对象——名称/值对的集合。不同的语言中，它被理解为对象，纪录，结构，字典，哈希表，有键列表（keyed list），或者关联数组。一个对象以“{”（左括号）开始，“}”（右括号）结束。每个“名称”后跟一个“:”（冒号）；“‘名称/值’ 对”之间使用“,”（逗号）分隔。
+ 数组——值的有序列表。在大部分语言中，它被理解为数组。一个数组以“[”（左中括号）开始，“]”（右中括号）结束。值之间使用“,”（逗号）分隔。
+ JSON没有变量或其他控制结构。JSON只用于数据传输。
+ JSON语法是基于对面字面量和数组字面量的JavaScript语法。当使用字面量时，将包括数据本身，但不包括生成数据的表达式。
+ 1、 数据类型
+ JSON数据结构包含以下数据类型：字符、数字、布尔值（true/false）、null、对象，数组。
+ JSON字符串必须使用双引号括起来。它们使用标准的JavaScript转义序列。因此在以下列字符的前面要添加一个反斜线：
+ JSON具有以下这些形式：”（引号）、b（空格）、n（新行）、f（换页）、r（回车）、t（水平定位）、u（为Unicode字符增加4个数位）、\（反斜线符号）、/（正斜杠符号）。
+ 2、对象字面量
+ JSON使用字面量来表示对象，如果有一个以上的成员对象，则在JSON中，可以将其表示为一个包含拥有两个对象的数组的对象。下列代码显示JOSN文本形式的member对象：
+ {“memeber”:[
+       {
+             “name”:”Tom”,
+             “age”:22,
+             “country”:”USA”
+ },
+ {
+             “name”:”WangMing”,
+             “age”:25,
+             “country”:”China”
+ }
+ ]
+ }
+ 3、使用JSON解析器
+ 可以使用JSON解析器从对象和数组中创建JSON文本或者JSON文本中创建对象和数组。JSON站占www.json.rog/json.js上提供有JSON解析器，通过将下列代码加入到页面的头部上即可使用。JSON解析器提供了两个函数：toJSONString()和parseJSON()。
+ toJSONString()方法被添加到JavaScript Object和Array定义中，该方法能将JavaScript对象或数组转换成JSON文本。不必将对象或数组转换成字面量就能使用该方法。
+ parseJSON()方法能从JSON文本中创建对象或数组。
+ （二）使用XMLHttpRequest对象创建JSON数据请求
+ 1、创建请求
+ 如果直接请求服务器上一个JSON文件中的JSON数据，则可以利用文件名来请求JSON文件。
+ respone.open(“GET”,”classes.txt”,true);
+ 在这种情况下，classes.txt是JSON数据文件的名称，request是创建用来存放XMLHttpRequest对象的变量。
+ 2、 解析响应
+ 一旦接受服务器的JSON数据，就可以采用两种不同的方式解析该响应。可以使用JavaScript的内置函数eval()，或者为了进一步的安全，使用JSON解析器代替。
+ eval()方法可以把JavaScript字符串当作参数，还可以将该字符串转换成对象，或作为命令动作。如果使用XMLHttpRequest对象的responseText属性请求JSON数据，那么使用eval()将JSON文本字符串转换成JavaScript对象。因为JSON字符串常包包含花括号，所以用圆括号来括住JSON字符串，以表明字它是一个求值表达式，而不是一个要运行的命令。
+ var jsonResp=request.responseText;
+ jsonResp=eval(“(”+jsonResp+”)”);
+ 如果Web服务器既提供JSON数据也提供请求页面，则适合选用eval()方法。如果涉及安全，则适合使用JSON解析器。JSON解析器只作用于JSON文本，并且不执行其他JavaScript。在这种情况下，可以使用responseText，但要使用parseJSON()方法将JSON文本字符串转换成JavaScript对象。要访问parseJOSN函数，需要要添加引用json.js文件到页面中。
+ var jsonResp=request.responseText;
+ jsonResp=jsonResp.parseJSON();
+ 下面以实例来说明在JavaScript中简单使用JSON：
+ &lt;script type=&quot;text/javascript&quot;&gt;
+ var user =[
+ {
+       &quot;name&quot;:”shenmiweiyi”,
+       &quot;QQ&quot;:306451129,
+       &quot;email&quot;:”shenmiweiyi@163.com”
+       &quot;address&quot;:
+       [
+             {&quot;City&quot;:&quot;ZhengZhou&quot;,&quot;ZipCode&quot;:&quot;450000&quot;},
+             {&quot;City&quot;:&quot;BeiJing&quot;,&quot;ZipCode&quot;:&quot;100000&quot;}
+       ]
+ },
+ {
+       &quot;name&quot;:”kehao”,
+       &quot;QQ&quot;:254892313,
+       &quot;email&quot;:”kehao@163.com”
+       &quot;address&quot;:
+       [
+             {&quot;City&quot;:&quot;ShangHai&quot;,&quot;ZipCode&quot;:&quot;200000&quot;},
+             {&quot;City&quot;:&quot;GuangZhou&quot;,&quot;ZipCode&quot;:&quot;510000&quot;}
+       ]
+  }
+ ]
+ alert(user[0].name+”的Email是：”user[0].email);  //outputs shenmiweiyi的Email是：shenmiweiyi@163.com
+  alert(user[1].name+”住在：”user[1].address[0].city) //outputs kehao住在：ShangHai
+</code></pre><p><br>      JSON已经是JavaScript标准的一部分。目前，主流的浏览器对JSON支持都非常完美，应用JSON，我们可以从XML的解析中摆脱出来，对那些应用Ajax的Web2.0网站来说，JSON确实是目前最灵活的轻量级方案。</p>
+<p>转载自<a href="http://www.yiiyaa.net/" target="_blank" rel="external">http://www.yiiyaa.net/</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JSON/" rel="tag"># JSON</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2013/05/07/卡尔维诺 孤独/" rel="next" title="卡尔维诺 孤独">
+                <i class="fa fa-chevron-left"></i> 卡尔维诺 孤独
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2013/05/08/编写高效的CSS选择器/" rel="prev" title="编写高效的CSS选择器">
+                编写高效的CSS选择器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Wooley Gu" />
+          <p class="site-author-name" itemprop="name">Wooley Gu</p>
+          <p class="site-description motion-element" itemprop="description">我将去向哪里</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">147</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">94</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://m.qxqy.net" title="栖霞棋院" target="_blank">栖霞棋院</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wooley Gu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

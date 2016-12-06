@@ -1,0 +1,710 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python,SAE,Mac," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="转自：http://765i.cn/sae上部署django-mac-osx/
+Deploying Django on SAE (Mac OSX)
+Sina App Engine（简称SAE）是新浪研发中心推出的国内首个公有云计算平台，支持PHP,MySQL,Memcached,Mail,TaskQueue,RDC（关系型数据库集群）, KVDB(非关系型数据库)等服务。我的博客就是假设在SAE上">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SAE上部署Django (Mac OSX)">
+<meta property="og:url" content="http://wooley.win/2013/03/30/SAE上部署Django (Mac OSX)/index.html">
+<meta property="og:site_name" content="航行日志">
+<meta property="og:description" content="转自：http://765i.cn/sae上部署django-mac-osx/
+Deploying Django on SAE (Mac OSX)
+Sina App Engine（简称SAE）是新浪研发中心推出的国内首个公有云计算平台，支持PHP,MySQL,Memcached,Mail,TaskQueue,RDC（关系型数据库集群）, KVDB(非关系型数据库)等服务。我的博客就是假设在SAE上">
+<meta property="og:updated_time" content="2016-12-02T09:43:58.674Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SAE上部署Django (Mac OSX)">
+<meta name="twitter:description" content="转自：http://765i.cn/sae上部署django-mac-osx/
+Deploying Django on SAE (Mac OSX)
+Sina App Engine（简称SAE）是新浪研发中心推出的国内首个公有云计算平台，支持PHP,MySQL,Memcached,Mail,TaskQueue,RDC（关系型数据库集群）, KVDB(非关系型数据库)等服务。我的博客就是假设在SAE上">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://wooley.win/2013/03/30/SAE上部署Django (Mac OSX)/"/>
+
+
+
+
+
+  <title> SAE上部署Django (Mac OSX) | 航行日志 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">航行日志</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">追寻梦想</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://wooley.win/2013/03/30/SAE上部署Django (Mac OSX)/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Wooley Gu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="航行日志">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="航行日志" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                SAE上部署Django (Mac OSX)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2013-03-30T14:11:33+08:00">
+                2013-03-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>转自：<a href="http://765i.cn/sae上部署django-mac-osx/" target="_blank" rel="external">http://765i.cn/sae上部署django-mac-osx/</a></p>
+<p><strong>Deploying Django on SAE (Mac OSX)</strong></p>
+<p>Sina App Engine（简称SAE）是新浪研发中心推出的国内首个公有云计算平台，支持PHP,MySQL,Memcached,Mail,TaskQueue,RDC（关系型数据库集群）, KVDB(非关系型数据库)等服务。我的博客就是假设在SAE上的，云平台的好处就是省去了自己搭建环境、维护服务的时间，而且根据你自己服务的使用公共资源的多少来收费。用户第一次注册的时候赠送一定量的资源，而且还可以通过认证来获得更多的免费资源。更多关于SAE<br><a href="http://www.sinaapp.com/" title="新浪云平台" target="_blank" rel="external">新浪云平台</a></p>
+<p>最近SAE开放了了Python的测试，好不容易通过了申请，虽然已经很早了，但是还是很兴奋的。最近在学习Django，就赶快尝试着部署一个Django到SAE。</p>
+<h2 id="第一部分"><a href="#第一部分" class="headerlink" title="第一部分"></a><strong>第一部分</strong></h2><p>现在就开始吧，先看看在本地环境需要做些什么<br><em>1.为SAE项目创建一个目录，把我们需要的一切都放在这里</em><br><strong>mkdir sae-django</strong><br><strong>cd sae-django</strong></p>
+<p><em>2.创建一个虚拟环境</em><br>我们要知道为什么需要创建一个虚拟环境</p>
+<blockquote>
+<p>如果你和我一样，在做Django应用开发中喜欢使用一些Django第三方扩展来进行Django的快速开发，那么可能就会在自己的Linux系统中的Python目录中大量的安装过一些扩展库了，但A应用用到的扩展B应用又不一定需要用到。当然一个应用开发完成，可以需要写一些安装手册这类的，这时你可能会有些茫然，到底哪些扩展是自己这个应用所用到的？这样看来一个“干净”的开发环境还是很有必要的。</p>
+<p>利用Virtualenv能快速的搞定这样一个开发环境，事实上不仅仅是Django需要，你在做任何Python开发的的时候，都可以考虑做这么一个“干净”的虚拟环境来进行开发，这样就不必担心搞乱自己的Python主目录时的库程序了。具体而言，做这么一个开发环境，可能会需要用到pip，virtualenv，easy_install。<br>来看看MacOSX下是怎么来安装我们需要的这些工具。我用的是Lion，Mac有一个默认的工具easy_install用来安装各种Package。</p>
+</blockquote>
+<p>a. 安装virtualenv。<br>用管理员权限进行安装，命令：<br><strong> sudo easy_install virtualenv</strong><br>这步完成后，以后就可以进接使用virtualenv来进行Python开发环境的创建了。<br>b. 环境创建<br><strong>virtualenv mysite</strong><br>会得到下面的返回结果<br>New python executable in mysite/bin/python<br>Installing setuptools…………done.<br>Installing pip……………done.<br>这时会在mysite目录中生成三个Python所需的目录。</p>
+<p>c.启用虚拟环境<br>进入mysite目录，执行：<br><strong>source bin/activate</strong><br>这里你会发现原来的命令提示符发生了变化，多了一个括号，里面的字符即为你所创建的虚拟环境的名称。接下来的所有模块的安装，都只会直接安装到项目目录中去。</p>
+<p>前期的准备工作就完成了，接下来就看看怎么安装django，并把django部署到SAE上吧</p>
+<h2 id="第二部分"><a href="#第二部分" class="headerlink" title="第二部分"></a>第二部分</h2><p><em>4. 准备部署到SAE</em></p>
+<p>a.我们首先是要在SAE上创建新的应用</p>
+<p><a href="http://sae.sina.com.cn/?m=myapp&amp;a=create" target="_blank" rel="external">http://sae.sina.com.cn/?m=myapp&amp;a=create</a></p>
+<p>b.在本地检出SVN代码(mydjangoapp)，就在一开始创建的sae-django目录下<br><strong>svn co <a href="https://svn.sinaapp.com/mydjango" target="_blank" rel="external">https://svn.sinaapp.com/mydjango</a></strong><br>c.建立一个数字为目录名的版本目录<br><strong>mkdir 1</strong><br><strong>cd 1</strong><br>d.新建文件index.wsgi，内容如下</p>
+<p><pre>import os<br>import django.core.handlers.wsgi<br>import sae<br>os.environ[&#039;DJANGO_SETTINGS_MODULE&#039;] = &#039;my_first_django.settings&#039;<br>application = sae.create_wsgi_app(django.core.handlers.wsgi.WSGIHandler())</pre><br>e.安装Django<br>使用PIP进行Django的安装，SAE当前仅支持1.2.7。<br>当前我们还是在虚拟环境下，执行命令：<br><strong> pip install django==1.2.7 </strong><br>安装完成后即可进行项目的开发工作了。<br>PIP有一个很不错的功能，可使用该功能来自己生成项目安装的扩展，而其他用户在使用你的应用的时候，也可以方便的通过这种方式，完成扩展的再次安装。<br>a.扩展生成：<br>pip freeze &gt; prj.txt<br>会在当前目录中生成这样一个文本文件，包含扩展名及相应的版本号。<br>b.下次进行安装<br>pip install -r prj.txt<br>自动装所有模块一次些安装完成。<br>需要注意的是，你每次开始继续开发项目的时候，都需要使用source进入到虚拟环境后才可以正确的进行项目的开发。<br>f.初始化django应用:<br><strong>django-admin.py startproject my_first_django</strong><br>g. SAE需要从django安装目录复制admin的media目录到版本目录下, django的安装路径是<br>mysite/lib/python2.7/site-packages<br><strong>cp -rf django/contrib/admin/media/ .</strong></p>
+<p>最后的目录结构是在sae-django下<br>mydjango/ mysite/<br>——————————-<br>1/<br>——————————-<br>index.wsgi media my_first_django</p>
+<p>h. 提交代码<br>访问 <a href="http://$yourappname.sinaapp.com" target="_blank" rel="external">http://$yourappname.sinaapp.com</a> ，就可看到Django的欢迎页面了。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/SAE/" rel="tag"># SAE</a>
+          
+            <a href="/tags/Mac/" rel="tag"># Mac</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2013/03/20/开发者如何提升和推销自己/" rel="next" title="开发者如何提升和推销自己">
+                <i class="fa fa-chevron-left"></i> 开发者如何提升和推销自己
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2013/04/02/基于SAE Python开发的两个应用/" rel="prev" title="基于SAE Python开发的两个应用">
+                基于SAE Python开发的两个应用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Wooley Gu" />
+          <p class="site-author-name" itemprop="name">Wooley Gu</p>
+          <p class="site-description motion-element" itemprop="description">我将去向哪里</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">147</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">94</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://m.qxqy.net" title="栖霞棋院" target="_blank">栖霞棋院</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一部分"><span class="nav-number">1.</span> <span class="nav-text">第一部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二部分"><span class="nav-number">2.</span> <span class="nav-text">第二部分</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wooley Gu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
