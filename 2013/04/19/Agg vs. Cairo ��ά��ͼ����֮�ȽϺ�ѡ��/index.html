@@ -1,0 +1,712 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="AGG,Cairo," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="当今时代对于作为二维图形软件开发者， 是幸运的。因为除了Windows GDI/GDI+之外，我们还有很多其他的选择。而且这些选择除了能跨平台之外，性能上与原始GDI/GDI+相比，都不逊色。
+如果不考虑绘图的效果，使用Win32 GDI函数直接绘图的效率大约是同样的GDI Plus的10倍以上。为了反走样的美观，只有牺牲效率了。老式的程序还在使用GDI绘图，不是这些程序不想提升到GDI+，可能这">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Agg vs. Cairo 二维绘图引擎之比较和选择">
+<meta property="og:url" content="http://wooley.win/2013/04/19/Agg vs. Cairo 二维绘图引擎之比较和选择/index.html">
+<meta property="og:site_name" content="航行日志">
+<meta property="og:description" content="当今时代对于作为二维图形软件开发者， 是幸运的。因为除了Windows GDI/GDI+之外，我们还有很多其他的选择。而且这些选择除了能跨平台之外，性能上与原始GDI/GDI+相比，都不逊色。
+如果不考虑绘图的效果，使用Win32 GDI函数直接绘图的效率大约是同样的GDI Plus的10倍以上。为了反走样的美观，只有牺牲效率了。老式的程序还在使用GDI绘图，不是这些程序不想提升到GDI+，可能这">
+<meta property="og:updated_time" content="2016-12-02T09:43:58.675Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Agg vs. Cairo 二维绘图引擎之比较和选择">
+<meta name="twitter:description" content="当今时代对于作为二维图形软件开发者， 是幸运的。因为除了Windows GDI/GDI+之外，我们还有很多其他的选择。而且这些选择除了能跨平台之外，性能上与原始GDI/GDI+相比，都不逊色。
+如果不考虑绘图的效果，使用Win32 GDI函数直接绘图的效率大约是同样的GDI Plus的10倍以上。为了反走样的美观，只有牺牲效率了。老式的程序还在使用GDI绘图，不是这些程序不想提升到GDI+，可能这">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://wooley.win/2013/04/19/Agg vs. Cairo 二维绘图引擎之比较和选择/"/>
+
+
+
+
+
+  <title> Agg vs. Cairo 二维绘图引擎之比较和选择 | 航行日志 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">航行日志</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">追寻梦想</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://wooley.win/2013/04/19/Agg vs. Cairo 二维绘图引擎之比较和选择/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Wooley Gu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="航行日志">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="航行日志" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Agg vs. Cairo 二维绘图引擎之比较和选择
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2013-04-19T11:06:21+08:00">
+                2013-04-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C++</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><span style="font-size: medium"><sup>当今时代对于作为二维图形软件开发者， 是幸运的。因为除了Windows GDI/GDI+之外，我们还有很多其他的选择。而且这些选择除了能跨平台之外，性能上与原始GDI/GDI+相比，都不逊色。</sup></span></p>
+<p>如果不考虑绘图的效果，使用Win32 GDI函数直接绘图的效率大约是同样的GDI Plus的10倍以上。为了反走样的美观，只有牺牲效率了。老式的程序还在使用GDI绘图，不是这些程序不想提升到GDI+，可能这样改动的代码量太大，所谓船大不好掉头所致。</p>
+<p>因此，后发的优势就是可以利用当今软件发展的最新成果，快速切入一个领域，所谓迎头赶上。</p>
+<p>言归正传。仍以我们假定的目标：开发一个二维图形软件为例。对于绘图核心引擎这块，有几种选择：</p>
+<p>1、使用Windows/Linux原生的GDI绘图原语。</p>
+<p>2、使用开源的绘图核心。<br><sup>开源的软件目前越来越显示出强大的生命力。因此，目前虽然直接调用底层GDI/GDIPlus的函数，可以获得比较灵活的性能，但是对于商业应用软件的开发来说都不是最优的。连google这样的大公司，都有采用开源的绘图引擎（skia-后来被google收购），因此我们有理由相信，选择一个适合的引擎是必要的。</sup></p>
+<p>网络上对AGG的陈述不乏溢美之词:</p>
+<p><span style="font-size: small"> </span></p>
+<p><sup><span style="font-size: small">“AGG，全名：Anti-Grain Geometry，是一个开源的、高效的2D图形库，它的网站： <a href="http://www.antigrain.com/" target="_blank" rel="external">http://www.antigrain.com/</a> 。AGG的功能与GDI+的功能非常类似，但提供了比GDI+更灵活的编程接口，其产生的图形的质量也非常高，而且它是跨平台的，其宣传可以在非常多的操作系统上运行，至少在Windows、Wince、Linux三个台平上测试通过。”</span></sup></p>
+<p><span style="font-size: small">“在设计上，它是师出Boost库，在其中使用了大量的现代标准C++语言的语法规则，包括模板、仿函数等处理，但是为了能在更多的平台上使用，它并没有直接使用Boost和STL库，而是自己实现了部分STL功能。”<br></span></p>
+<h2 id="AGG-2-5-License"><a href="#AGG-2-5-License" class="headerlink" title="AGG 2.5 License"></a>AGG 2.5 License<a style="color: #108ac6;text-decoration: underline" name="toc0001"></a></h2><p><strong>Anti-Grain Geometry</strong> is an Open Source, free library released under the terms and conditions of <strong>GNU GPL</strong>license.</p>
+<p><span style="font-size: small">再看看另外一个大名鼎鼎的绘图引擎Cairo：</span></p>
+<p><span style="font-size: small">“cairo 的目标是以跨平台的方式在打印机和屏幕上产生相同的输出，它正在成为 Linux® 图形领域的重要软件。GNOME、GTK+、Pango 等许多软件已经使用了它提供的 2D 功能。 cairo 是一个免费的矢量绘图软件库，它可以绘制多种输出格式。cairo 支持许多平台，包括 Linux、BSD、Microsoft® Windows® 和 OSX（BeOS 和 OS2 后端也正在开发）。Linux 绘图可以通过 X Window 系统、Quartz、图像缓冲格式或 OpenGL 上下文来实现。另外，cairo 还支持生成 PostScript 或 PDF 输出，从而产生高质量的打印结果。在理想情况下，cairo 的用户可以在打印机和屏幕上获得非常接近的输出效果。”</span></p>
+<p><span style="font-size: small">“cairo 的一项主要设计目标是提供尽可能接近的输出。这种一致的输出使 cairo 非常适合 GUI 工具集编程和跨平台应用程序开发。使用同一个绘图库打印高分辨率的屏幕和绘制屏幕内容，这种功能具有显著的优点。另外，在支持的每种目标平台上，cairo 尝试智能化地使用底层硬件和软件支持。高质量矢量图形和高性能的结合使 cairo 成为优秀的 UNIX® 绘图系统。”<br>“cairo 是用 C 编写的，但是为大多数常用的语言提供了绑定。选用 C 语言有助于创建新的绑定，同时在进行 C 语言调用时可以提供高性能。应该特别注意 Python 绑定，它支持快速原型开发，而且降低了学习 cairo 绘图 API 的门槛。 ”<br></span></p>
+<p>Cairo is <a href="http://www.fsf.org/licensing/essays/free-sw.html" target="_blank" rel="external">free software</a> and is available to be redistributed and/or modified under the terms of either the GNU Lesser General Public License (LGPL) version 2.1 or the Mozilla Public License (MPL) version 1.1 at your option.</p>
+<p>原谅我引用了3个段落来描述Cairo这个精巧的东西。因为从网络上搜索得出的结果不成正比的偏向于Cairo。</p>
+<p>经过测试分析，我总结出不宜使用AGG的几点原因：</p>
+<p>1)AGG是C++编写的，因此，它不能被C语言很好地调用。<span style="font-size: small">由于</span> <span style="font-size: small">其中使用了大量的现代标准C++语言的语法规则，包括模板、仿函数等处理</span> <span style="font-size: small">，导致这样的库的学习过程将是痛苦的。</span></p>
+<p><span style="font-size: small">2）AGG采用的版权协议是GNU GPL的。而Cairo至少是LGPL的。AGG采用的协议表明它不适合用于商业的闭源软件开发。</span></p>
+<p><span style="font-size: small">3）Cairo的绘图效率是接近GDI/GDIPlus的。经过优化算法，可以做到完全忽略绘图效率上的差别。</span></p>
+<p><span style="font-size: small">4）AGG自从2006年之后就没有更新过。我怀疑这个社区已经不存在了。对于这样一个发展中的引擎，在长达5年的时间里没有更新，无论如何是说不过去的，也是无法让人信赖的。</span></p>
+<p><span style="font-size: small">5）Cairo社区至今保持着旺盛的生命力。作为名震江湖的FireFox的核心绘图引擎，作为Linux的绘图引擎，我们可以足够信赖它。</span></p>
+<p><span style="font-size: small">6）具体到库中的功能，只有用过才知道孰优孰劣。</span></p>
+<p><span style="font-size: small">7）C语言相比C++更具有简洁和高效的特性。更适合跨平台软件的开发。</span></p>
+<p><span style="font-size: small">当然，我的孤陋寡闻可能导致忽略了目前存在的更优秀的绘图引擎，请您不妨告诉我，这样把它们都加入到这个讨论之中。</span></p>
+<p><span style="font-size: small">最后，请相信Linux的选择，请相信FireFox的选择。同时也是我的选择。</span></p>
+<p>from:<a href="http://love19820823.iteye.com/blog/1303092" target="_blank" rel="external">http://love19820823.iteye.com/blog/1303092</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/AGG/" rel="tag"># AGG</a>
+          
+            <a href="/tags/Cairo/" rel="tag"># Cairo</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2013/04/18/AGG手册最后关于适应性细分法描画贝塞尔曲线的感触/" rel="next" title="AGG手册最后关于适应性细分法描画贝塞尔曲线的感触">
+                <i class="fa fa-chevron-left"></i> AGG手册最后关于适应性细分法描画贝塞尔曲线的感触
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2013/04/23/e5-b0-8f-e9-a1-be-e5-a4-8d-e7-9b-98/" rel="prev" title="小顾复盘">
+                小顾复盘 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Wooley Gu" />
+          <p class="site-author-name" itemprop="name">Wooley Gu</p>
+          <p class="site-description motion-element" itemprop="description">我将去向哪里</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">150</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">97</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://m.qxqy.net" title="栖霞棋院" target="_blank">栖霞棋院</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#AGG-2-5-License"><span class="nav-number">1.</span> <span class="nav-text">AGG 2.5 License</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wooley Gu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

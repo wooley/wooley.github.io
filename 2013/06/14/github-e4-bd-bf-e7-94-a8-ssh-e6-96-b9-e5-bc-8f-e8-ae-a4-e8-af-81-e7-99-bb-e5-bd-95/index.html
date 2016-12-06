@@ -1,0 +1,817 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="git,ssh," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="z:http://www.wojilu.com/forum1/topic/2235
+github 使用 ssh 方式认证登录。
+&amp;nbsp;
+官方文档：http://help.github.com/ssh-key-passphrases/
+&amp;nbsp;
+之所以不使用普通的密码验证登录，原因在于：密码不够安全。如果你使用简单的密码，比如“1234”，非常容易被猜到或者被暴力破解；如果你使用复杂的密码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="github 使用 ssh 方式认证登录">
+<meta property="og:url" content="http://wooley.win/2013/06/14/github-e4-bd-bf-e7-94-a8-ssh-e6-96-b9-e5-bc-8f-e8-ae-a4-e8-af-81-e7-99-bb-e5-bd-95/index.html">
+<meta property="og:site_name" content="航行日志">
+<meta property="og:description" content="z:http://www.wojilu.com/forum1/topic/2235
+github 使用 ssh 方式认证登录。
+&amp;nbsp;
+官方文档：http://help.github.com/ssh-key-passphrases/
+&amp;nbsp;
+之所以不使用普通的密码验证登录，原因在于：密码不够安全。如果你使用简单的密码，比如“1234”，非常容易被猜到或者被暴力破解；如果你使用复杂的密码">
+<meta property="og:image" content="http://static.wojilu.com/upload/image/2011/11/9/9134204169061194_m.jpg">
+<meta property="og:image" content="http://static.wojilu.com/upload/image/2011/11/9/914095805560602_m.jpg">
+<meta property="og:image" content="http://static.wojilu.com/upload/image/2011/11/9/9143189789526523_m.jpg">
+<meta property="og:image" content="http://static.wojilu.com/upload/image/2011/11/9/9144142470536406_m.jpg">
+<meta property="og:image" content="http://static.wojilu.com/upload/image/2011/11/9/9144814436016729_m.jpg">
+<meta property="og:image" content="http://static.wojilu.com/upload/image/2011/11/9/9145142147327758_m.jpg">
+<meta property="og:image" content="http://static.wojilu.com/upload/image/2011/11/9/9145674901400839_m.jpg">
+<meta property="og:image" content="http://static.wojilu.com/upload/image/2011/11/9/9149424697624288_m.jpg">
+<meta property="og:image" content="http://static.wojilu.com/upload/image/2011/11/9/9150299199102295_m.jpg">
+<meta property="og:image" content="http://static.wojilu.com/upload/image/2011/11/9/9150908689288547_m.jpg">
+<meta property="og:updated_time" content="2016-12-02T09:43:58.676Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="github 使用 ssh 方式认证登录">
+<meta name="twitter:description" content="z:http://www.wojilu.com/forum1/topic/2235
+github 使用 ssh 方式认证登录。
+&amp;nbsp;
+官方文档：http://help.github.com/ssh-key-passphrases/
+&amp;nbsp;
+之所以不使用普通的密码验证登录，原因在于：密码不够安全。如果你使用简单的密码，比如“1234”，非常容易被猜到或者被暴力破解；如果你使用复杂的密码">
+<meta name="twitter:image" content="http://static.wojilu.com/upload/image/2011/11/9/9134204169061194_m.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://wooley.win/2013/06/14/github-e4-bd-bf-e7-94-a8-ssh-e6-96-b9-e5-bc-8f-e8-ae-a4-e8-af-81-e7-99-bb-e5-bd-95/"/>
+
+
+
+
+
+  <title> github 使用 ssh 方式认证登录 | 航行日志 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">航行日志</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">追寻梦想</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://wooley.win/2013/06/14/github-e4-bd-bf-e7-94-a8-ssh-e6-96-b9-e5-bc-8f-e8-ae-a4-e8-af-81-e7-99-bb-e5-bd-95/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Wooley Gu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="航行日志">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="航行日志" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                github 使用 ssh 方式认证登录
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2013-06-14T10:20:42+08:00">
+                2013-06-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/程序人生/" itemprop="url" rel="index">
+                    <span itemprop="name">程序人生</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>z:<a href="http://www.wojilu.com/forum1/topic/2235" target="_blank" rel="external">http://www.wojilu.com/forum1/topic/2235</a></p>
+<p>github 使用 ssh 方式认证登录。</p>
+<p>&nbsp;</p>
+<p>官方文档：<a href="http://help.github.com/ssh-key-passphrases/" target="_blank" rel="external">http://help.github.com/ssh-key-passphrases/</a></p>
+<p>&nbsp;</p>
+<p>之所以不使用普通的密码验证登录，原因在于：密码不够安全。如果你使用简单的密码，比如“1234”，非常容易被猜到或者被暴力破解；如果你使用复杂的密码，为了避免自己也忘记，又可能会记在某个地方，如果被人发现，就糟了。两种方式都很不妥。所以 github 采用 ssh 密钥方案。</p>
+<p>&nbsp;</p>
+<p>但如果只使用 ssh 密钥而不使用 passphrase(口令或密码)，那跟使用复杂密码然后记下来没啥区别。比如你将ssh密钥记在电脑某处，如果其他人获取了这个文件，那就没有安全可言。解决办法是：再增加一个 passphrase。</p>
+<p>&nbsp;</p>
+<p>所以，整个认证过程是：</p>
+<p>a）先生成一个 ssh key，在github和本地机器配置；</p>
+<p>b）然后在登录的时候，再输入 passphrase 登录（当然，我们可以通过脚本配置，避免每次重复输入 passphrase ）。</p>
+<p>&nbsp;</p>
+<p>第一部分：配置ssh</p>
+<p>先进入 cygwin 命令行。为了在你的电脑和github之间建立安全连接，需要SSH keys，所以你需要</p>
+<p>&nbsp;</p>
+<p>1）先检测是否有这个key，请点击开始菜单中的 Git Bash，输入如下命令</p>
+<p>$ cd ~/.ssh</p>
+<p>&nbsp;</p>
+<p>2）系统应该反馈“系统找不到指定文件”，那么，我们需要生成一个新的key，输入如下代码</p>
+<p>$ ssh-keygen -t rsa -C “your_email@youremail.com”</p>
+<p>——其中的email请填写你注册时候的email</p>
+<p>&nbsp;</p>
+<p>系统开始生成ssh公钥和私钥，然后会问你保存的目录，请直接回车即可(直接回车意味着在当前目录下的.ssh目录保存)。</p>
+<p>&nbsp;</p>
+<p>3）输入一个密码（passphrase），请至少填写一个4位数，这个密码是你连接到github所用。输入之后，会生成id_rsa(私钥) 和 id_rsa.pub(公钥) 文件，如下图所示：</p>
+<p>&nbsp;</p>
+<p><a href="http://static.wojilu.com/upload/image/2011/11/9/9134204169061194.jpg" target="_blank" rel="external"><img src="http://static.wojilu.com/upload/image/2011/11/9/9134204169061194_m.jpg" alt=""></a></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>访问github网站， “Account Settings” &gt; Click “SSH Public Keys” &gt; Click “Add another public key”</p>
+<p>&nbsp;</p>
+<p>用文本编辑器打开上图中第二个文件 id_rsa.pub，里面的内容就是SSH key，请复制它，粘贴入key里面，记得不要有任何多余的空格和换行。然后点击“Add key”提交。（Title栏可以不填写）</p>
+<p><a href="http://static.wojilu.com/upload/image/2011/11/9/914095805560602.jpg" target="_blank" rel="external"><img src="http://static.wojilu.com/upload/image/2011/11/9/914095805560602_m.jpg" alt=""></a></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>现在，你可以测试通过SSH连接到github了。请打开Git Bash，输入如下代码——</p>
+<p>ssh -T git@github.com</p>
+<p>&nbsp;</p>
+<p>如果提示“can’t be established.”什么东西（如下代码），请不要管，直接按yes</p>
+<p>The authenticity of host ‘github.com (207.97.227.239)’ can’t be established.</p>
+<p>RSA key fingerprint is 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48.</p>
+<p>Are you sure you want to continue connecting (yes/no)?</p>
+<p>然后提示输入密码（passphrase）。</p>
+<p>&nbsp;</p>
+<p>如果看到 You’ve successfully authenticated, but GitHub does not provide shell access 信息，就表示连接成功。</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>第二部分：避免重复输入 passphrase</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>通过上面的流程，已经正确配置了 ssh ，但你每次使用的时候，总是很不爽，比如在命令行下，每次 pull 或 push，都要重复输入 passphrase。你会想：我明明已经使用 ssh key 了，为什么还要我输入密码？</p>
+<p>&nbsp;</p>
+<p>分两种情况讨论——</p>
+<p>&nbsp;</p>
+<p>一、命令行下避免重复输入</p>
+<p>&nbsp;</p>
+<p>在这种情况下，有一个工具可以帮你避免重复输入 passphrase ，这个工具叫 ssh-agent ，它可以帮你安全的存储passphrase，不用重复输入。</p>
+<p>&nbsp;</p>
+<p>具体使用方法是通过脚本预设——</p>
+<p>&nbsp;</p>
+<p>1）打开用户主目录下(比如c/cygwin/home/Administrator)的 .bashrc 文件，将如下脚本内容添加进去：</p>
+<p>&nbsp;</p>
+<p>SSH_ENV=”$HOME/.ssh/environment”</p>
+<h1 id="start-the-ssh-agent"><a href="#start-the-ssh-agent" class="headerlink" title="start the ssh-agent"></a>start the ssh-agent</h1><p>function start_agent {<br>echo “Initializing new SSH agent…”</p>
+<h1 id="spawn-ssh-agent"><a href="#spawn-ssh-agent" class="headerlink" title="spawn ssh-agent"></a>spawn ssh-agent</h1><p>ssh-agent | sed ‘s/^echo/#echo/‘ &gt; “$SSH_ENV”<br>echo succeeded<br>chmod 600 “$SSH_ENV”<br>. “$SSH_ENV” &gt; /dev/null<br>ssh-add<br>}</p>
+<h1 id="test-for-identities"><a href="#test-for-identities" class="headerlink" title="test for identities"></a>test for identities</h1><p>function test_identities {</p>
+<h1 id="test-whether-standard-identities-have-been-added-to-the-agent-already"><a href="#test-whether-standard-identities-have-been-added-to-the-agent-already" class="headerlink" title="test whether standard identities have been added to the agent already"></a>test whether standard identities have been added to the agent already</h1><p>ssh-add -l | grep “The agent has no identities” &gt; /dev/null<br>if [ $? -eq 0 ]; then<br>ssh-add</p>
+<h1 id="SSH-AUTH-SOCK-broken-so-we-start-a-new-proper-agent"><a href="#SSH-AUTH-SOCK-broken-so-we-start-a-new-proper-agent" class="headerlink" title="$SSH_AUTH_SOCK broken so we start a new proper agent"></a>$SSH_AUTH_SOCK broken so we start a new proper agent</h1><p>if [ $? -eq 2 ];then<br>start_agent<br>fi<br>fi<br>}</p>
+<h1 id="check-for-running-ssh-agent-with-proper-SSH-AGENT-PID"><a href="#check-for-running-ssh-agent-with-proper-SSH-AGENT-PID" class="headerlink" title="check for running ssh-agent with proper $SSH_AGENT_PID"></a>check for running ssh-agent with proper $SSH_AGENT_PID</h1><p>if [ -n “$SSH_AGENT_PID” ]; then<br>ps -ef | grep “$SSH_AGENT_PID” | grep ssh-agent &gt; /dev/null<br>if [ $? -eq 0 ]; then<br>test_identities<br>fi</p>
+<h1 id="if-SSH-AGENT-PID-is-not-properly-set-we-might-be-able-to-load-one-from"><a href="#if-SSH-AGENT-PID-is-not-properly-set-we-might-be-able-to-load-one-from" class="headerlink" title="if $SSH_AGENT_PID is not properly set, we might be able to load one from"></a>if $SSH_AGENT_PID is not properly set, we might be able to load one from</h1><h1 id="SSH-ENV"><a href="#SSH-ENV" class="headerlink" title="$SSH_ENV"></a>$SSH_ENV</h1><p>else<br>if [ -f “$SSH_ENV” ]; then<br>. “$SSH_ENV” &gt; /dev/null<br>fi<br>ps -ef | grep “$SSH_AGENT_PID” | grep -v grep | grep ssh-agent &gt; /dev/null<br>if [ $? -eq 0 ]; then<br>test_identities<br>else<br>start_agent<br>fi<br>fi</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>2）然后打开 cygwin 的命令行，第一次打开，它会要求你输入 passphrase ，输入之后，再执行相应的远程操作，就不会要求重复输入 passphrase 了（当然重启电脑会要求再次输入）。</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>二、git extentions 中避免重复输入</p>
+<p>&nbsp;</p>
+<p>【启用 PuTTY】</p>
+<p>&nbsp;</p>
+<p>1）打开 PuTTY，方法：“远程”-&gt;PuTTY-&gt;“生成或者导入key”</p>
+<p><a href="http://static.wojilu.com/upload/image/2011/11/9/9143189789526523.jpg" target="_blank" rel="external"><img src="http://static.wojilu.com/upload/image/2011/11/9/9143189789526523_m.jpg" alt=""></a></p>
+<p>&nbsp;</p>
+<p>2）导入你前面的 ssh key，点击下面的“Load”按钮，导入前面生成的 id_rsa 文件(注意：是id_rsa，没有后缀名，不是id_rsa.pub)</p>
+<p>&nbsp;</p>
+<p><a href="http://static.wojilu.com/upload/image/2011/11/9/9144142470536406.jpg" target="_blank" rel="external"><img src="http://static.wojilu.com/upload/image/2011/11/9/9144142470536406_m.jpg" alt=""></a></p>
+<p>&nbsp;</p>
+<p>3）这时它要求你输入 passphrase</p>
+<p><a href="http://static.wojilu.com/upload/image/2011/11/9/9144814436016729.jpg" target="_blank" rel="external"><img src="http://static.wojilu.com/upload/image/2011/11/9/9144814436016729_m.jpg" alt=""></a></p>
+<p>4）输入成功，然后你需要点击下图的 Save private key，将私钥保存，你可以将它保存在 id_rsa(ssh私钥) 同一个目录。PuTTY 生成的私钥文件是 .ppk 后缀名。</p>
+<p>&nbsp;</p>
+<p><a href="http://static.wojilu.com/upload/image/2011/11/9/9145142147327758.jpg" target="_blank" rel="external"><img src="http://static.wojilu.com/upload/image/2011/11/9/9145142147327758_m.jpg" alt=""></a></p>
+<p>&nbsp;</p>
+<p>【在 git extensions 中使用 PuTTY】</p>
+<p>1）打开 git etensions，在 “远程”菜单中，点击“管理远程档案库”</p>
+<p><a href="http://static.wojilu.com/upload/image/2011/11/9/9145674901400839.jpg" target="_blank" rel="external"><img src="http://static.wojilu.com/upload/image/2011/11/9/9145674901400839_m.jpg" alt=""></a></p>
+<p>&nbsp;</p>
+<p>2）点击右下部分的“私钥文件”后面的“浏览”，将前面 PuTTY 中保存的 .ppk 后缀的私钥文件加载进来。</p>
+<p>&nbsp;</p>
+<p>然后点击“加载SSH密钥”，输入 passphrase，然后点击“测试连接”</p>
+<p><a href="http://static.wojilu.com/upload/image/2011/11/9/9149424697624288.jpg" target="_blank" rel="external"><img src="http://static.wojilu.com/upload/image/2011/11/9/9149424697624288_m.jpg" alt=""></a></p>
+<p>此时 PuTTY/plink.exe 开始启动，只要这个开着，就不用重复输入 passphrase</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>3）现在可以顺利和远程库操作，比如下面的“拉取”</p>
+<p><a href="http://static.wojilu.com/upload/image/2011/11/9/9150299199102295.jpg" target="_blank" rel="external"><img src="http://static.wojilu.com/upload/image/2011/11/9/9150299199102295_m.jpg" alt=""></a></p>
+<p>&nbsp;</p>
+<p>或者在 vs 中直接操作——</p>
+<p><a href="http://static.wojilu.com/upload/image/2011/11/9/9150908689288547.jpg" target="_blank" rel="external"><img src="http://static.wojilu.com/upload/image/2011/11/9/9150908689288547_m.jpg" alt=""></a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/git/" rel="tag"># git</a>
+          
+            <a href="/tags/ssh/" rel="tag"># ssh</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2013/06/07/e5-b0-8f-e9-a1-be-e7-9a-84-e6-ae-b5-e4-bd-8d-e8-af-81-e4-b9-a6/" rel="next" title="小顾的段位证书">
+                <i class="fa fa-chevron-left"></i> 小顾的段位证书
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2013/06/27/今天域名解析出问题了/" rel="prev" title="今天域名解析出问题了">
+                今天域名解析出问题了 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Wooley Gu" />
+          <p class="site-author-name" itemprop="name">Wooley Gu</p>
+          <p class="site-description motion-element" itemprop="description">我将去向哪里</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">150</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">97</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://m.qxqy.net" title="栖霞棋院" target="_blank">栖霞棋院</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#start-the-ssh-agent"><span class="nav-number">1.</span> <span class="nav-text">start the ssh-agent</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#spawn-ssh-agent"><span class="nav-number">2.</span> <span class="nav-text">spawn ssh-agent</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#test-for-identities"><span class="nav-number">3.</span> <span class="nav-text">test for identities</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#test-whether-standard-identities-have-been-added-to-the-agent-already"><span class="nav-number">4.</span> <span class="nav-text">test whether standard identities have been added to the agent already</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SSH-AUTH-SOCK-broken-so-we-start-a-new-proper-agent"><span class="nav-number">5.</span> <span class="nav-text">$SSH_AUTH_SOCK broken so we start a new proper agent</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#check-for-running-ssh-agent-with-proper-SSH-AGENT-PID"><span class="nav-number">6.</span> <span class="nav-text">check for running ssh-agent with proper $SSH_AGENT_PID</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#if-SSH-AGENT-PID-is-not-properly-set-we-might-be-able-to-load-one-from"><span class="nav-number">7.</span> <span class="nav-text">if $SSH_AGENT_PID is not properly set, we might be able to load one from</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SSH-ENV"><span class="nav-number">8.</span> <span class="nav-text">$SSH_ENV</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wooley Gu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

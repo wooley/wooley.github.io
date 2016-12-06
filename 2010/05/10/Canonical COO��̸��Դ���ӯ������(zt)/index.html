@@ -1,0 +1,678 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Wooley, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="来源：http://www.cnbeta.com/articles/110320.htm
+Canonical的COO，Matt Asay近日撰文一篇，对于开源软件在遇到扩大业务规模的时候遇到的问题进行了一些总结和分享。做为如今最流行的Linux发行版之一—Ubuntu的支 持厂商，Canonical对开源软件的发展方向有着很深的体会。下面是Matt的文章：
+开源软件有一个很好的2009年，而且所有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Canonical COO漫谈开源软件盈利趋势(zt)">
+<meta property="og:url" content="http://wooley.win/2010/05/10/Canonical COO漫谈开源软件盈利趋势(zt)/index.html">
+<meta property="og:site_name" content="航行日志">
+<meta property="og:description" content="来源：http://www.cnbeta.com/articles/110320.htm
+Canonical的COO，Matt Asay近日撰文一篇，对于开源软件在遇到扩大业务规模的时候遇到的问题进行了一些总结和分享。做为如今最流行的Linux发行版之一—Ubuntu的支 持厂商，Canonical对开源软件的发展方向有着很深的体会。下面是Matt的文章：
+开源软件有一个很好的2009年，而且所有">
+<meta property="og:image" content="http://img.cnbeta.com/newsimg/100505/195549070339783.jpg">
+<meta property="og:updated_time" content="2016-12-02T09:43:58.669Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Canonical COO漫谈开源软件盈利趋势(zt)">
+<meta name="twitter:description" content="来源：http://www.cnbeta.com/articles/110320.htm
+Canonical的COO，Matt Asay近日撰文一篇，对于开源软件在遇到扩大业务规模的时候遇到的问题进行了一些总结和分享。做为如今最流行的Linux发行版之一—Ubuntu的支 持厂商，Canonical对开源软件的发展方向有着很深的体会。下面是Matt的文章：
+开源软件有一个很好的2009年，而且所有">
+<meta name="twitter:image" content="http://img.cnbeta.com/newsimg/100505/195549070339783.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://wooley.win/2010/05/10/Canonical COO漫谈开源软件盈利趋势(zt)/"/>
+
+
+
+
+
+  <title> Canonical COO漫谈开源软件盈利趋势(zt) | 航行日志 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">航行日志</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">追寻梦想</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://wooley.win/2010/05/10/Canonical COO漫谈开源软件盈利趋势(zt)/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Wooley Gu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="航行日志">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="航行日志" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Canonical COO漫谈开源软件盈利趋势(zt)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2010-05-10T16:34:10+08:00">
+                2010-05-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/程序人生/" itemprop="url" rel="index">
+                    <span itemprop="name">程序人生</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>来源：<a href="http://www.cnbeta.com/articles/110320.htm" target="_blank" rel="external">http://www.cnbeta.com/articles/110320.htm</a></p>
+<p><strong>Canonical的COO，Matt Asay近日撰文一篇，对于开源软件在遇到扩大业务规模的时候遇到的问题进行了一些总结和分享。做为如今最流行的Linux发行版之一—Ubuntu的支 持厂商，Canonical对开源软件的发展方向有着很深的体会。下面是Matt的文章：</strong></p>
+<p>开源软件有一个很好的2009年，而且所有迹象都表明2010年会更好。</p>
+<p>企业们都在转向开源。他们在经济不景气时要尽量的省钱，同时也想更进一步的推动创新能力和生产力。</p>
+<p>这给开源厂商们带来了巨大的希望，他们很希望能够从开源的日益流行中获得收入，尤其是支持服务。但是在应对需求而<strong>扩大业务规模</strong>的同时，他们碰到了一些具体的挑战。</p>
+<p>具体的说，支持服务是任何一家开源企业的命脉。那么该如何扩大支持规模，同时还能扩大盈利呢？这两个目标可并不是总能一起实现的。</p>
+<p><strong>业务扩展的问题</strong></p>
+<p>对Enterprise 2.0世界的支持加剧了挑战。企业的重要信息可能会驻留在防火墙之内，同时也可能会出现在公共论坛、百科和其他社区网站等其他场所，所以要想支持这些数据就不得不同时照顾五六个不同的地方。</p>
+<p>长期来说这无法做到高效率，提供支持服务的开源企业必须挣扎着满足客户SLA的要求，这对于在企业中全面推广开源应用也是不好的影响。</p>
+<p>JasperSoft是一个我很喜欢的开源企业，他们在这方面就是一个例子。JasperSoft最近宣布他们的软件已经被下载了超过1000万 次，而且已经在全世界150多个国家拥有了多达12万注册会员。在Gartner的报告中，JasperSoft成为2009年增长最快的商业智能供应 商，站在包括所有开源和专有软件厂商的第一位。</p>
+<p>这是好消息，对不对？嗯，但也有点问题。</p>
+<p>虽然增长总是好的，但这给JasperSoft的支持部门带来了严峻挑战。我曾与在JasperSoft负责支持的Matthew Geise谈过，他告诉我他们碰到了许多困难，需要手动检查JasperSoft的文档、内部和外部的百科，Salesforce.com的管理系统，还 要查找JasperForge.org社区上的信息。<br><img src="http://img.cnbeta.com/newsimg/100505/195549070339783.jpg" alt="Exalead CloudView"></p>
+<p>通过部署Exalead CloudView，JasperSoft把问题减轻了不少。Geise现在能够为JasperSoft需要支持的不同数据来源创建一个统一的搜索框。据他估计，改进后支持工作的效率提高了40%以上，这与Aberdeen研究小组的发现相一致。</p>
+<p>这个结果不坏。</p>
+<p><strong>盈利模式在哪里</strong></p>
+<p>也许这就是开源厂商的发展方向。但是我怀疑，即使不断改进，支持服务仍然只是整体的一个小部分，无论支持多么有效，还是有更有效率的盈利模式在那里。</p>
+<p>因此，虽然支持服务仍将是开源产品的重要组成部分，但我们并不会看到它成为重要的菜单项目之一。那些能够提供最有效的支持服务的厂商会获得丰厚的回报，但前提是他们的支持服务要和其他增值服务或者软件销售紧密的结合在一起。</p>
+<p>这是否意味着开源正变得越来越像它原先想要取代的传统软件模型呢？也许吧。</p>
+<p>SpringSource的创始人Rod Johnson在几年前曾说到企业应该只从那些能够绝对控制代码的厂商那里购买支持服务，现在看来这非常合理，尽管这有些淡化了“没有厂商锁定”的开源精神。（51CTO编辑注：SpringSource在去年8月开始<a href="http://developer.51cto.com/art/200908/143265.htm" target="_blank" rel="external">加盟VMware</a>，现在正着重于进行云计算方面的开发）</p>
+<p>不过这种趋势对于开源软件厂商们似乎更重要些。根据Gartner的调查，有95%的企业在2010年会增长或保持他们的SaaS部署，这样看来市场上不会缺乏为了提高业务弹性而寻找开源解决方案的企业。</p>
+<p>因此我要说的是，想要通过支持服务获取收入的开源厂商可以做得更好一些，比如为客户提供些容易使用的SaaS部署软件？在蛋糕上再放个樱桃。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2010/05/08/google-codejam-e8-b5-84-e6-a0-bc-e8-b5-9b-e7-bb-93-e6-9d-9f/" rel="next" title="Google codeJam资格赛结束">
+                <i class="fa fa-chevron-left"></i> Google codeJam资格赛结束
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2010/05/13/sap-e5-ae-a3-e5-b8-8358-e4-ba-bf-e7-be-8e-e5-85-83-e6-94-b6-e8-b4-adsybase-e5-af-b9-e6-8a-97-e7-94-b2-e9-aa-a8-e6-96-87/" rel="prev" title="SAP宣布58亿美元收购Sybase对抗甲骨文">
+                SAP宣布58亿美元收购Sybase对抗甲骨文 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Wooley Gu" />
+          <p class="site-author-name" itemprop="name">Wooley Gu</p>
+          <p class="site-description motion-element" itemprop="description">我将去向哪里</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">150</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">97</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://m.qxqy.net" title="栖霞棋院" target="_blank">栖霞棋院</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wooley Gu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

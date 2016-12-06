@@ -1,0 +1,660 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Wooley, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="在这几个月的对弈客户端的编程中，玄玄围棋先后连上了中国围棋网（CWS）、熊猫围棋网（即原来的IGS）、Tom、弈城（YC）。它们有各自不同的特性。从对它们的比较中我们大致可以看出对弈软件（包括服务器和客户端）的发展。这里需要说明一下的是，连上Tom/YC完全是为了检测玄玄围棋连上多个服务器的程序结构的合理性，是为了测试否能连上各种不同类型的网站，并没有发布它们的打算，因而只实现了看棋和评棋的功能，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="几个对弈网站某些特性的比较">
+<meta property="og:url" content="http://wooley.win/2013/05/09/几个对弈网站某些特性的比较/index.html">
+<meta property="og:site_name" content="航行日志">
+<meta property="og:description" content="在这几个月的对弈客户端的编程中，玄玄围棋先后连上了中国围棋网（CWS）、熊猫围棋网（即原来的IGS）、Tom、弈城（YC）。它们有各自不同的特性。从对它们的比较中我们大致可以看出对弈软件（包括服务器和客户端）的发展。这里需要说明一下的是，连上Tom/YC完全是为了检测玄玄围棋连上多个服务器的程序结构的合理性，是为了测试否能连上各种不同类型的网站，并没有发布它们的打算，因而只实现了看棋和评棋的功能，">
+<meta property="og:updated_time" content="2016-12-02T09:43:58.675Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="几个对弈网站某些特性的比较">
+<meta name="twitter:description" content="在这几个月的对弈客户端的编程中，玄玄围棋先后连上了中国围棋网（CWS）、熊猫围棋网（即原来的IGS）、Tom、弈城（YC）。它们有各自不同的特性。从对它们的比较中我们大致可以看出对弈软件（包括服务器和客户端）的发展。这里需要说明一下的是，连上Tom/YC完全是为了检测玄玄围棋连上多个服务器的程序结构的合理性，是为了测试否能连上各种不同类型的网站，并没有发布它们的打算，因而只实现了看棋和评棋的功能，">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://wooley.win/2013/05/09/几个对弈网站某些特性的比较/"/>
+
+
+
+
+
+  <title> 几个对弈网站某些特性的比较 | 航行日志 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">航行日志</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">追寻梦想</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://wooley.win/2013/05/09/几个对弈网站某些特性的比较/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Wooley Gu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="航行日志">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="航行日志" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                几个对弈网站某些特性的比较
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2013-05-09T16:45:03+08:00">
+                2013-05-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/程序人生/" itemprop="url" rel="index">
+                    <span itemprop="name">程序人生</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在这几个月的对弈客户端的编程中，玄玄围棋先后连上了中国围棋网（CWS）、熊猫围棋网（即原来的IGS）、Tom、弈城（YC）。它们有各自不同的特性。从对它们的比较中我们大致可以看出对弈软件（包括服务器和客户端）的发展。这里需要说明一下的是，连上Tom/YC完全是为了检测玄玄围棋连上多个服务器的程序结构的合理性，是为了测试否能连上各种不同类型的网站，并没有发布它们的打算，因而只实现了看棋和评棋的功能，当然，如果它们主人不介意的话，那我肯定会毫不犹豫发布连上它们的功能，真希望能这样，因为上面有大量高手在下棋，还有大赛的转播，资源实在太丰富了。</p>
+<p>中国围棋网和熊猫围棋网其实都是脱胎于原NNGS围棋服务器，属于最早一代围棋服务器。他们的数据结构，通信协议非常接近，但后者做了很多扩充和改进。而Tom和YC的相近程度更高，主要的区别在于，后者注重多国用户的支持，而前者目标用户主要是国内。因此，下面的比较，主要是CWS/ISG与Tom/YC两大阵营的比较。</p>
+<p>1、对局室<br>对于CWS/ISG来说，我感觉一个主要的不足是，对局室在比赛一结束就不存在了。这至少会带来两个问题，一是，对于较为重要的比赛，例如大赛转播，比赛一结束人们就无法看棋了。比赛结束并不意味着对局室就没有人进入了，恰恰相反的是，比赛结束后往往还有许多用户想进去看棋。二是，比赛一结束看棋的用户就不能在原对局室对棋局进行评棋了，因为对局室都不存在了。Tom/YC显然注意到了这些问题，对局室并不会因为比赛结束而消失；对于普通棋局，只有当对局室内空无一人，服务器才将对局室删除。对于转播的大赛棋局，对局室必须经由管理员才能删除，即便室内已空无一人，它们还可以存在在服务器上。</p>
+<p>2、文本数据与二进制数据<br>CWS/IGS客户端与服务器的通信都是文本格式的，我认为采用文本格式的通信协议唯一的好处是，不同客户端开发者能较容易分析通信数据并开发相应的功能。不足之处是，通信效率低下。而二进制格式的协议和文本格式的刚好相反，通信效率高了，别人也不容易为服务器开发客户端。如果需要协议保密的话，这样当然更好。我曾注意到，如果服务器上有3000个用户在线，连上Tom/YC所需的通信量不到CWS/IGS的一半。另外，在同样知晓通信协议的情况下，为Tom/YC写客户端要容易很多。</p>
+<p>3、计时机制<br>在CWS/IGS上，每当有用户走子时，服务器除了提供走子的坐标，还会传来双方的剩余时间。随着时间一秒一秒的流逝，在下一步走子之前，客户端要显示时间只有靠自己计时。这样会带来一个问题，就是客户端的计时和服务器的有一定差异，尤其当网络不够通畅时，网速慢的一方常常因网络不通被判超时。Tom/YC则不同，客户端每一秒的时间显示都是来自服务器的指示，当网络不通时，时间就会停止不动，服务器也会停止为不通的一方计时，这样，基本上不会有人因网速慢而输棋，当然，反复掉线除外。</p>
+<p>4、列表更新<br>CWS/IGS对于客户端的对局列表/用户列表/观棋者列表通常是不会通知更新的。用户为了更新这些信息，通常需要主动向服务器发出请求。Tom/YC则不同，这些列表一有更新，就会主动通知客户端进行更新，这样客户端在任何时候的对局列表和用户列表都是最新的，而且更新的效率很高，因为每次更新信息相对于重新获取这些数据信息量是很小的。正是这个原因，玄玄围棋在实现CWS/IGS的对局室时，只列出对局双方的信息，而不像Tom/YC，还包括观棋者列表。</p>
+<p>5、赌棋功能<br>Tom/YC具有赌棋的功能，就是在看棋的时候用银两押某一方胜负的功能。按说这一功能和下棋的关系不大，有时还会有押某两支球队的比赛哪支获胜的赌局，这和围棋一点关系都扯不上。但即便如此，还是有许多人乐此不疲。我就见过不少人，他们几乎不下棋，专门赌棋，虽然赢来银两只是一个虚拟的数字。有过一段时间，发现我自己居然也有点上瘾了，在看棋时心揪得更紧。或许，好赌也是人的天性吧。</p>
+<p>如果将CWS看成是第1代的围棋服务器的话，IGS可以算2代，而Tom/YC则是第3代。上述的5大差异基本上反映了第2代与第3代围棋服务器之间的差异。下面我们来看看，IGS这个2代服务器相对于第1代的CWS到底做了哪些改进，在比较的过程中我可能还会顺便就同一功能和Tom/YC进行比较。</p>
+<p>IGS通常上面的用户可达3000多人，而NNGS服务器的源代码很多年以前我是看过的，记得好像支持的在线用户数大约不到1000人，CWS好像是500人。要支持3-6倍的用户数，我相信看不见的改进肯定不少。此外，IGS还做了如下改进：<br>1、为了和传统的客户端兼容，IGS支持传统方式的对局申请。这一申请方式有许多不足，其中主要的是，不能在申请时说明让多少子，是否猜先。因此IGS引进了所谓“新对局申请”方式，这一方式除了弥补了前面说的两个不足，还可以在申请时说明是采用熊猫网计时方式还读秒方式。所谓的“熊猫网计时方式”就是我们知道的“加拿大计时方式”，它规定在读秒时，必须在规定的时间内走完25手。虽然IGS可以采用读秒方式进行读秒，但是真正使用这种方式下棋的人非常少，我统计了一下，大约不会超过千分之二。如此低的使用率，加上它将读秒时间分成三个组成要素，1 基本读秒时间 2 考虑时间 3 考虑次数，这让读秒时间的显示变得很复杂，完全不像Tom/YC那样的，30/60秒3次，简单明了。因此玄玄围棋不支持在IGS上使用读秒方式的。这里捎带一提的是，为了实现新对局申请方式，作者花了很长时间，烦得半死。<br>2、IGS支持“自动申请对局”（Tom/YC也支持，但实现的方式好像不一样，使用的人相对较少，要申请成功不是很容易，还要付出银两）。这一功能我觉得很有用，常常是“自动申请对局”的按钮一按下，就可以立即开始对局。<br>3、IGS支持用户设定对局条件。对局条件主要是对局时间和让子猜先的设定。有了这一设定，其它人如果使用“新对局申请”方式向你提出对局申请，就必须符合你设定的条件，这样免去了许多无谓的打扰。另外还可以设定自动申请对局的条件。<br>4、对于悔棋的处理IGS也比较好。CWS规定最多只能悔棋5次。常有对手在达到这个极限前反复要求悔棋。而IGS的处理策略是这样的，一旦某一方的悔棋请求被另一方拒绝，双方就不能再悔棋了。而Tom/YC的策略是对局申请时就规定是否允许悔棋。这有点死板。常常是，明显是鼠标点错了的棋，因为一开始申明不能悔棋而无法悔棋，导致对局无效。<br>5、在IGS上，下手向上手申请对局时，系统通常会自动设定让子。对局结果计入升降级比赛成绩，而在Tom/YC上，让子棋只算友谊对局，不计入升降级比赛。因此，在Tom/YC，让子棋比较少，而在IGS上，让子棋随处可见。让子棋有让子棋的乐趣。<br>6、IGS的用户信息中包含“国家/地区”的信息，彰显了IGS的“国际性”。Tom/YC在这方面还有待改进。<br>7、IGS提供了局后对弈双方复盘的功能，玄玄围棋称之为“连线复盘”。这一功能Tom/YC上也有。玄玄围棋在7.0的第一次发布中尽量包含这一功能，除非预计实现它会严重推后新版本的发布。玄玄围棋在写这篇搏文时，IGS对弈模块就差这个功能没有实现，其余全部写好了。<br>8、 IGS引入了“新段位评定”方式，比如同样是1段，分为 1d?、1d、1d+，分别代表自设1段，系统认定1段，系统认定强1段。它们之间的水平往往差距较大。<br>9、IGS需要“弃权一手”3次才开始进入点目模式，这样更合理。2次就进入点目有人会不粘劫就进入点目模式，从而便宜1目。</p>
+<p>从以上可以看出，Tom/YC虽然总体上比IGS要先进，但在许多实用性细节上IGS反而要更好，上面的2、3、4、5、6都是IGS更为优秀的地方。当然IGS也有改得连CWS都不如的地方，例如，用户的留言信息只能是一行，对局历史列表只列出最近24小时内的成绩。Tom/YC不允许用户留言，但对局历史却非常详细，还可以调出历史棋局来看。另外，IGS在大厅中不能交谈，只能用户间一对一交流或在对局室内评棋，大厅里显得很冷清。<br>我认为，如果在第3代的Tom/YC基础上再结合IGS的各种优点，就可以算第4代的围棋服务器了，那就是围棋服务器中的F22了。真希望有机会能自己写一个这样的服务器。</p>
+<p>转自：<a href="http://blog.sina.com.cn/s/blog_67de34630100p96w.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_67de34630100p96w.html</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2013/05/08/e7-bc-96-e5-86-99-e9-ab-98-e6-95-88-e7-9a-84css-e9-80-89-e6-8b-a9-e5-99-a8/" rel="next" title="编写高效的CSS选择器">
+                <i class="fa fa-chevron-left"></i> 编写高效的CSS选择器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2013/05/15/e6-9c-ac-e6-9d-a5-e6-83-b3-e5-8e-bb-e7-9c-8b-e5-a4-a9-e5-85-83-e8-b5-9b-e7-9a-84/" rel="prev" title="本来想去看天元赛的，最终无法成行">
+                本来想去看天元赛的，最终无法成行 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Wooley Gu" />
+          <p class="site-author-name" itemprop="name">Wooley Gu</p>
+          <p class="site-description motion-element" itemprop="description">我将去向哪里</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">150</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">97</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://m.qxqy.net" title="栖霞棋院" target="_blank">栖霞棋院</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wooley Gu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
